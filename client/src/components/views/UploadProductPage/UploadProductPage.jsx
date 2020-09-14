@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import FileUpload from '../../utils/FileUpload';
 import { Typography, Button, Form, Input } from 'antd';
 
 const { Title } = Typography;
@@ -45,8 +46,9 @@ function UploadProductPage() {
       </div>
 
       <Form>
-
         {/* dropzone */}
+        <FileUpload />
+
         <br /><br />
 
         <label>이름</label>
@@ -85,8 +87,6 @@ function UploadProductPage() {
         <br /><br />
 
         <Button>확인</Button>
-
-
       </Form>
 
     </div>
