@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import FileUpload from '../../utils/FileUpload';
 import { Typography, Button, Form, Input } from 'antd';
+import axios from 'axios';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -15,13 +16,12 @@ const Continents = [
   {key:7, value: "Antarctica"},
 ]
 
-function UploadProductPage() {
+function UploadProductPage(props) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [continent, setContinent] = useState(1);
   const [images, setImages] = useState([]);
-
 
   const titleChangeHandler = (e) => {
     setTitle(e.target.value);
@@ -39,15 +39,47 @@ function UploadProductPage() {
     setContinent(e.target.value);
   }
 
+  const updateImages = (newImages) => {
+    setImages(newImages);
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    
+    if(!title || !description || !price || !continent || !images){
+      return alert("모든 값을 넣어주셔야 합니다.")
+    }
+
+    // 서버에 입력 data를 request로 보낸다. 
+    const body = {
+      writer: props.user.userData._id, // 로그인된 유저의 id
+      title: title ,
+      description: description,
+      price: price,
+      images: images,
+      continent: continent,
+    }
+
+    axios.post('/api/product', body)
+      .then(response => {
+        if(response.data.success){
+          alert("상품 업로드에 성공했습니다.");
+          props.history.push('/');
+        } else {
+          alert("상품 업로드에 실패했습니다.");
+        }
+      });
+  }
+
   return (
     <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
       <div style={{ textAlign: 'center', margionBottom: '2rem' }}>
         <Title level={2}>여행 상품 업로드</Title>
       </div>
 
-      <Form>
+      <Form onSubmit={submitHandler}>
         {/* dropzone */}
-        <FileUpload />
+        <FileUpload updateImages={updateImages}/>
 
         <br /><br />
 
@@ -86,7 +118,7 @@ function UploadProductPage() {
 
         <br /><br />
 
-        <Button>확인</Button>
+        <button type="submit">확인</button>
       </Form>
 
     </div>
