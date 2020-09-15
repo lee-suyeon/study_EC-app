@@ -32,7 +32,8 @@ router.post('/image', (req, res) => {
       fileName: res.req.file.filename 
     })
   });
-})
+});
+
 
 router.post('/', (req, res) => {
 
@@ -43,6 +44,18 @@ router.post('/', (req, res) => {
     if(err) return res.status(400).json({ success: false, err });
     return res.status(200).json({ success: true });
   });
+});
+
+
+router.post('/products', (req, res) => {
+
+  // product collection에 들어 있는 모든 상품 정보를 가져온다.
+  Product.find()
+    .populate("writer") // 사용자에 대한 모든 정보를 가져온다. 
+    .exec((err, productInfo) => {
+      if(err) return res.status(400).json({ success: false, err})
+      return res.status(200).json({ success: true, productInfo })
+    });
 })
 
 module.exports = router;
