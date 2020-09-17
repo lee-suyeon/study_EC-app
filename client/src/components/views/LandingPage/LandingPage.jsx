@@ -4,6 +4,7 @@ import { Icon, Col, Card, Row } from 'antd';
 import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
 import RadioBox from './Sections/RadioBox';
+import SearchFeature from './Sections/SearchFeature';
 import { continents, price } from './Sections/Datas';
 
 function LandingPage() {
@@ -15,6 +16,7 @@ function LandingPage() {
 		continent: [],
 		price: [],
 	})
+	const [ searchTerm, setSearchTerm ] = useState("");
 
 	useEffect(() => {
 		// 초기 랜딩시 상품 8개만 가져온다
@@ -106,6 +108,19 @@ function LandingPage() {
 		setFilters(newFilters);
 	}
 
+	const updateSearchTerm = (term) => {
+		let body = {
+			skip: 0,
+			limit: limit,
+			filter: filters,
+			searchTerm: term,
+		}
+		
+		setSkip(0);
+		setSearchTerm(term);
+		getProducts(body);
+	}
+
 	return (
 		<div style={{ width: '75%', margin: '3rem auto' }}>
 			
@@ -134,7 +149,11 @@ function LandingPage() {
 
 
 			{/* Search */}
-
+			<div style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto' }}>
+				<SearchFeature 
+					updateSearchTerm={updateSearchTerm}
+				/>
+			</div>
 			{/* Cards */}
 
 			<Row gutter={[16, 16]}>
