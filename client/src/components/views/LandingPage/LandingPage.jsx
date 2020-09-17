@@ -2,12 +2,18 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Icon, Col, Card, Row } from 'antd';
 import ImageSlider from '../../utils/ImageSlider';
+import CheckBox from './Sections/CheckBox';
+import { continents } from './Sections/Datas';
 
 function LandingPage() {
 	const [ products, setProducts ] = useState([]);
 	const [ skip, setSkip ] = useState(0);
 	const [ limit, setLimit ] = useState(8);
 	const [ postSize, setPostSize ] = useState(0);
+	const [ filters, setFilters ] = useState({
+		continent: [],
+		price: [],
+	})
 
 	useEffect(() => {
 		// 초기 랜딩시 상품 8개만 가져온다
@@ -36,7 +42,6 @@ function LandingPage() {
 
 	const loadMoreHandler = () => {
 		let more = skip + limit;
-
 		let body = {
 			skip: more,
 			limit: limit,
@@ -62,6 +67,25 @@ function LandingPage() {
 		)
 	})
 
+	const showFilteredResults = (filter) => {
+		let body = {
+			skip: 0,
+			limit: limit,
+			filter: filter
+		}
+		getProducts(body);
+		setSkip(0);
+	}
+
+	// filters : 체크된 나라들이 담긴 array (CheckBox에서 전달됨)
+	const handlerFilters = (filter, category) => {
+		const newFilters = { ...filters }
+
+		// filters state의 continents 또는 price
+		newFilters[category] = filter
+		showFilteredResults(newFilters)
+	}
+
 	return (
 		<div style={{ width: '75%', margin: '3rem auto' }}>
 			
@@ -70,6 +94,15 @@ function LandingPage() {
 			</div>
 
 			{/* Filter */}
+
+			{/* CheckBox */}
+			<CheckBox 
+				list={continents}
+				handleFilters={filter => handlerFilters(filter, "continent")}
+			/>
+
+			{/* RadioBox */}
+
 
 			{/* Search */}
 

@@ -46,13 +46,21 @@ router.post('/', (req, res) => {
   });
 });
 
-
 router.post('/products', (req, res) => {
   // product collection에 들어 있는 모든 상품 정보를 가져온다.
   let limit = req.body.limit ? parseInt(req.body.limit) : 20;
   let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+
+  let findArgs = {};
+  for(let key in req.body.filter){ // key : continents or price
+    if(req.body.filter[key].length > 0){
+      findArgs[key] = req.body.filter[key]
+    }
+  }
+
+  console.log('findArgs', findArgs);
   
-  Product.find()
+  Product.find(findArgs)
     .populate("writer") // 사용자에 대한 모든 정보를 가져온다. 
     .skip(skip)
     .limit(limit)
@@ -60,6 +68,6 @@ router.post('/products', (req, res) => {
       if(err) return res.status(400).json({ success: false, err})
       return res.status(200).json({ success: true, productInfo, postSize: productInfo.length })
     });
-})
+});
 
 module.exports = router;
