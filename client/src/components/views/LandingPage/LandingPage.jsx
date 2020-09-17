@@ -3,7 +3,8 @@ import axios from 'axios';
 import { Icon, Col, Card, Row } from 'antd';
 import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
-import { continents } from './Sections/Datas';
+import RadioBox from './Sections/RadioBox';
+import { continents, price } from './Sections/Datas';
 
 function LandingPage() {
 	const [ products, setProducts ] = useState([]);
@@ -77,13 +78,32 @@ function LandingPage() {
 		setSkip(0);
 	}
 
+	const handlePrice = (value) => {
+		const data = price;
+		let array = [];
+
+		for(let key in data) {
+			if(data[key]._id === parseInt(value, 10)){
+				array = data[key].array;
+			}
+		}
+		return array;
+	}
+
 	// filters : 체크된 나라들이 담긴 array (CheckBox에서 전달됨)
 	const handlerFilters = (filter, category) => {
 		const newFilters = { ...filters }
 
 		// filters state의 continents 또는 price
-		newFilters[category] = filter
-		showFilteredResults(newFilters)
+		newFilters[category] = filter;
+
+		if(category === 'price'){
+		newFilters[category] = filter;
+			let priceValues = handlePrice(filter);
+			newFilters[category] = priceValues; // [0, 199]
+		}
+		showFilteredResults(newFilters);
+		setFilters(newFilters);
 	}
 
 	return (
@@ -95,13 +115,22 @@ function LandingPage() {
 
 			{/* Filter */}
 
-			{/* CheckBox */}
-			<CheckBox 
-				list={continents}
-				handleFilters={filter => handlerFilters(filter, "continent")}
-			/>
-
-			{/* RadioBox */}
+			<Row gutter={[16, 16]}>
+				<Col lg={12} xs={24}>
+					{/* CheckBox */}
+					<CheckBox 
+						list={continents}
+						handleFilters={filter => handlerFilters(filter, "continent")}
+					/>
+				</Col>
+				<Col lg={12} xs={24}>
+					{/* RadioBox */}
+					<RadioBox 
+						list={price}
+						handleFilters={filter => handlerFilters(filter, "price")}
+					/>
+				</Col>
+			</Row>
 
 
 			{/* Search */}

@@ -52,14 +52,20 @@ router.post('/products', (req, res) => {
   let skip = req.body.skip ? parseInt(req.body.skip) : 0;
 
   let findArgs = {};
-  for(let key in req.body.filter){ // key : continents or price
+  for(let key in req.body.filter){ // key : continents, price
     if(req.body.filter[key].length > 0){
-      findArgs[key] = req.body.filter[key]
+      if(key === 'price'){
+        findArgs[key] = {
+          $gte: req.body.filter[key][0], // greater than equal 이상 ex) 200이상
+          $lte: req.body.filter[key][1] // less than equal 이하 ex) 249이하
+        }
+      } else { // key가 continents일 때 
+        findArgs[key] = req.body.filter[key];
+      }
     }
   }
+  console.log("findArgs", findArgs)
 
-  console.log('findArgs', findArgs);
-  
   Product.find(findArgs)
     .populate("writer") // 사용자에 대한 모든 정보를 가져온다. 
     .skip(skip)
