@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Icon, Col, Card, Row } from 'antd';
 import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
@@ -59,7 +60,7 @@ function LandingPage() {
 		return (
 			<Col lg={6} md={8} xs={24} key={`prod.${index}`}>
 				<Card
-					cover={<ImageSlider images={prod.images}/>}
+					cover={<Link to={`/product/${prod._id}`}><ImageSlider images={prod.images}/></Link>}
 				>
 					<Card.Meta 
 						title={prod.title}
