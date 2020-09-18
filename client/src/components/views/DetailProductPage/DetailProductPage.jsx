@@ -36,7 +36,7 @@ function DetailProductPage({ match }) {
 
         <Col lg={12} sm={24}>
           {/* ProductInfo */}
-          <ProductInfo />
+          <ProductInfo detail={product}/>
         </Col>
       </Row>
     </div>
