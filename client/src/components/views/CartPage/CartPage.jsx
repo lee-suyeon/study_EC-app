@@ -25,7 +25,7 @@ function CartPage({ user }) {
     <div style={{ width: '85%', margin: '3rem auto' }}>
       <h1>My Cart</h1>
       <div>
-        <UserCardBlock products={user.cartDetail && user.cartDetail.product}/>
+        <UserCardBlock products={user.cartDetail && user.cartDetail}/>
       </div>
     </div>
   )
