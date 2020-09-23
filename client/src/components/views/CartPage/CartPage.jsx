@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getCartItems } from '../../../_actions/user_actions';
+import { getCartItems, removeCartItem } from '../../../_actions/user_actions';
 import UserCardBlock from './Sections/UserCardBlock';
+import { Empty } from 'antd';
 
 function CartPage({ user }) {
   const dispatch = useDispatch();
   const [ total, setTotal ] = useState('');
+  const [ showTotal, setShowTotal ] = useState(false);
 
   useEffect(() => {
 
@@ -29,18 +31,34 @@ function CartPage({ user }) {
       total += parseInt(item.price, 10) * item.quantity
     });
     setTotal(total);
+    setShowTotal(true);
+  }
+
+  const removeFromCart = (productId) => {
+    dispatch(removeCartItem(productId))
+      .then(response => {
+        if(response.payload.productInfo.length <= 0){
+          setShowTotal(false);
+        }
+      });
   }
 
   return (
     <div style={{ width: '85%', margin: '3rem auto' }}>
       <h1>My Cart</h1>
       <div>
-        <UserCardBlock products={user.cartDetail && user.cartDetail}/>
+        <UserCardBlock 
+          products={user.cartDetail && user.cartDetail}
+          removeItem={removeFromCart}  
+        />
       </div>
 
-      <div style={{ maginTop: '3rem' }}>
-        <h2>Total Amout: ${total}</h2>
-      </div>
+      {showTotal ?
+        <div style={{ maginTop: '3rem' }}>
+          <h2>Total Amout: ${total}</h2>
+        </div>
+      : <Empty description={false} style={{ marginTop: '1.5rem' }}/>}
+
     </div>
   )
 }
