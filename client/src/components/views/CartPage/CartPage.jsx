@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCartItems, removeCartItem } from '../../../_actions/user_actions';
 import UserCardBlock from './Sections/UserCardBlock';
+import Paypal from '../../utils/Paypal';
 import { Empty } from 'antd';
 
 function CartPage({ user }) {
@@ -58,7 +59,11 @@ function CartPage({ user }) {
           <h2>Total Amout: ${total}</h2>
         </div>
       : <Empty description={false} style={{ marginTop: '1.5rem' }}/>}
-
+      {showTotal && 
+        <Paypal 
+          total={total}
+        />
+      }
     </div>
   )
 }
