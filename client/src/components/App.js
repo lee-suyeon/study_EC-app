@@ -10,6 +10,8 @@ import Footer from "./views/Footer/Footer";
 import UploadProductPage from './views/UploadProductPage/UploadProductPage';
 import DetailProductPage from './views/DetailProductPage/DetailProductPage';
 import CartPage from './views/CartPage/CartPage'
+import HistoryPage from './views/HistoryPage/HistoryPage'
+
 //null   누구나 접근 가능
 //true   로그인 해야 접근 가능
 //false   로그인 한 사람은 접근 불가능
@@ -26,6 +28,7 @@ function App() {
           <Route exact path="/product/upload" component={Auth(UploadProductPage, true)} />
           <Route exact path="/product/:productId" component={Auth(DetailProductPage, null)} />
           <Route exact path="/user/cart" component={Auth(CartPage, true)} />
+          <Route exact path="/history" component={Auth(HistoryPage, true)} />
         </Switch>
       </div>
       <Footer />
