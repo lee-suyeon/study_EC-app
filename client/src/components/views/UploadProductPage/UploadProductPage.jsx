@@ -100,7 +100,8 @@ function UploadProductPage(props) {
         <br /><br />
 
         <label>가격($)</label>
-        <Input 
+        <Input
+          type='number'
           onChange={priceChangeHandler}
           value={price}
         />
