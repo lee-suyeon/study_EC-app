@@ -148,21 +148,20 @@ function LandingPage() {
 				</Col>
 			</Row>
 
-
 			{/* Search */}
 			<div style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto' }}>
 				<SearchFeature 
 					updateSearchTerm={updateSearchTerm}
 				/>
 			</div>
-			{/* Cards */}
 
+			{/* Cards */}
 			<Row gutter={[16, 16]}>
 				{renderCards}
 			</Row>
 
 			{postSize >= limit &&
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<div style={{ textAlign: 'center', marginTop: '2rem' }}>
 					<button onClick={loadMoreHandler}>더 보기</button>
 				</div>
 			}
